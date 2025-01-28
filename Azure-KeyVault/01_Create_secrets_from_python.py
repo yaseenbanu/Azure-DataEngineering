@@ -8,11 +8,8 @@ KVUri = f"https://keyvaultname.vault.azure.net/"
 credential = DefaultAzureCredential()
 client = SecretClient(vault_url=KVUri, credential=credential)
 
-# secretName = "azurestoragedatasets-access-key"
-# secretValue = "Sg4RwMEpqQd7zL5lV7plrT2bKGR7wrNhf4lRfkCcXgsCZHX8xHzqMkw68gTg4Y0+mX6CYu0QUDY2+AStHK5hsg=="
-
 secretName = 'azurestoragedatasets-connection-strings'
-secretValue = 'DefaultEndpointsProtocol=https;AccountName=azurestoragedataset;AccountKey=abcdef;EndpointSuffix=core.windows.net'
+secretValue = 'DefaultEndpointsProtocol=https;AccountName=azurestoragedataset;AccountKey=alpha123;EndpointSuffix=core.windows.net'
 
 print(f"Creating a secret in KV_NAME called '{secretName}' with the value '{secretValue}' ...")
 
