@@ -9,7 +9,7 @@ credential = DefaultAzureCredential()
 client = SecretClient(vault_url=KVUri, credential=credential)
 
 secretName = 'azurestoragedatasets-connection-strings'
-s_Value = 'secret_value'
+s_Value = 'value'
 
 print(f"Creating a secret in KV_NAME called '{secretName}' with the value '{s_Value}' ...")
 
