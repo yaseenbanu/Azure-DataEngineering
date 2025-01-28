@@ -1,0 +1,55 @@
+{
+	"name": "DS_Onprem_SQL_Server_Tickets",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQLServer_OnPremise",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 6"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "CinemaCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CinemaName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MovieId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TicketCount",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TicketPrice",
+				"type": "decimal",
+				"precision": 4,
+				"scale": 1
+			},
+			{
+				"name": "TransactionId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TransactionDt",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Tickets"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

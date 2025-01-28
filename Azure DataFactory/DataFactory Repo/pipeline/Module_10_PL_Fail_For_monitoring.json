@@ -1,0 +1,20 @@
+{
+	"name": "Module_10_PL_Fail_For_monitoring",
+	"properties": {
+		"activities": [
+			{
+				"name": "Fail1",
+				"type": "Fail",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "This is a fail message",
+					"errorCode": "000"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-12-17T17:59:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

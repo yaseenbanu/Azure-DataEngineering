@@ -1,0 +1,60 @@
+{
+	"name": "Module_05_PL_SQL_STG_CREDIT_TBL_TO_SQL_ETL",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_SP_tCast",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateCast]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SQLDB_Input",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "ACT_SP_tMoviesCastMap",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "ACT_SP_tCast",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateMoviesCastMap]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SQLDB_Input",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "MODULE 5"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-10-23T20:12:04Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

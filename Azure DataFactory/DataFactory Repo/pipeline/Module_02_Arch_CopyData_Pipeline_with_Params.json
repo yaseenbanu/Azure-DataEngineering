@@ -1,0 +1,79 @@
+{
+	"name": "Module_02_Arch_CopyData_Pipeline_with_Params",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyDataActivity",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"wildcardFileName": "*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ABLB_Input",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ABLB_Output",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"variables": {
+			"Date": {
+				"type": "String",
+				"defaultValue": "@formatDateTime(utcnow(), 'yyyyMMdd')"
+			}
+		},
+		"folder": {
+			"name": "MODULE 2/Archive"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-10-11T14:07:56Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

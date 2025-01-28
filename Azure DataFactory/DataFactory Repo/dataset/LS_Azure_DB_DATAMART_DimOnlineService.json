@@ -1,0 +1,46 @@
+{
+	"name": "LS_Azure_DB_DATAMART_DimOnlineService",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_SQL_DB_DATAMART",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 8"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ServiceKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ServiceCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ServiceName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CreatedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimOnlineService"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

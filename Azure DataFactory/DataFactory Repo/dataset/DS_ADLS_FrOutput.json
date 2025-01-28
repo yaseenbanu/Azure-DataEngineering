@@ -1,0 +1,40 @@
+{
+	"name": "DS_ADLS_FrOutput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS_Output",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 4"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "output",
+				"container": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "cast",
+				"type": "String"
+			},
+			{
+				"name": "crew",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

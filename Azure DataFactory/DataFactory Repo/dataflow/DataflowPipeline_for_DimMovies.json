@@ -1,0 +1,109 @@
+{
+	"name": "DataflowPipeline_for_DimMovies",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_AzureDB_tMovies",
+						"type": "DatasetReference"
+					},
+					"name": "StreamTMovies"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_AzureDB_tMovieStatus",
+						"type": "DatasetReference"
+					},
+					"name": "StreamtTMovieStatus"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LS_Azure_DB_DATAMART_DimMovie",
+						"type": "DatasetReference"
+					},
+					"name": "StreamDimMovies"
+				}
+			],
+			"transformations": [
+				{
+					"name": "StreamJoinTMoviesAndTMovieStatus"
+				},
+				{
+					"name": "StreamDerivedColumns"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          MovieId as integer,",
+				"          MovieIdNK as integer,",
+				"          Budget as integer,",
+				"          HomepagePath as string,",
+				"          Title as string,",
+				"          OriginalTitle as string,",
+				"          ReleaseDate as date,",
+				"          Revenue as long,",
+				"          Runtime as integer,",
+				"          MovieStatusId as integer,",
+				"          AvgVote as decimal(3,1),",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp,",
+				"          SrcFileName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> StreamTMovies",
+				"source(output(",
+				"          MovieStatusId as integer,",
+				"          MovieStatusName as string,",
+				"          CreatedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> StreamtTMovieStatus",
+				"StreamTMovies, StreamtTMovieStatus join(StreamTMovies@MovieStatusId == StreamtTMovieStatus@MovieStatusId,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> StreamJoinTMoviesAndTMovieStatus",
+				"StreamJoinTMoviesAndTMovieStatus derive(ModifiedDate = currentUTC(),",
+				"          CreatedDate = currentUTC()) ~> StreamDerivedColumns",
+				"StreamDerivedColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          MovieKey as integer,",
+				"          MovieIdNK as integer,",
+				"          Title as string,",
+				"          ReleaseDate as date,",
+				"          Runtime as integer,",
+				"          MovieStatus as string,",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     preSQLs:['TRUNCATE TABLE [dbo].[DimMovie];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          MovieIdNK,",
+				"          Title,",
+				"          ReleaseDate,",
+				"          Runtime,",
+				"          MovieStatus = MovieStatusName,",
+				"          CreatedDate,",
+				"          ModifiedDate",
+				"     )) ~> StreamDimMovies"
+			]
+		}
+	}
+}

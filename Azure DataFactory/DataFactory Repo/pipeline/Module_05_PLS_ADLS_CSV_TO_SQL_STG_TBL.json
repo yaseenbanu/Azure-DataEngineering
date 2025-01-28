@@ -1,0 +1,75 @@
+{
+	"name": "Module_05_PLS_ADLS_CSV_TO_SQL_STG_TBL",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_ADLS_CSV_TO_SQL_STG_CREDIT_TBL",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PL_ADLS_CSV_TO_SQL_STG_CREDIT_TBL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_ADLS_CSV_TO_SQL_STG_METADATA_TBL",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PL_ADLS_CSV_TO_SQL_STG_CREDIT_TBL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PL_ADLS_CSV_TO_SQL_STG_METADATA_TBL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_ADLS_CSV_TO_SQL_STG_RATINGS_TBL",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PL_ADLS_CSV_TO_SQL_STG_METADATA_TBL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PL_ADLS_CSV_TO_SQL_STG_RATINGS_TBL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "MODULE 5"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-10-25T13:10:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,46 @@
+{
+	"name": "DS_AzureDB_FactOnlinePurchase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_SQL_DB_DATAMART",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 8/2nd Dataflow"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OnlineServiceKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MovieKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Price",
+				"type": "decimal",
+				"precision": 4,
+				"scale": 1
+			},
+			{
+				"name": "TransactionId",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "FactOnlinePurchase"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

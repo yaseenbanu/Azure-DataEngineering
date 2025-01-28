@@ -1,0 +1,55 @@
+{
+	"name": "DS_Azure_SQL_DB_CinemaTickets_TBL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQLDB_Input",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 6"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "cinema_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cinema_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "movie_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ticket_count",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ticket_price",
+				"type": "decimal",
+				"precision": 4,
+				"scale": 1
+			},
+			{
+				"name": "transaction_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "transaction_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "cinema_tickets"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

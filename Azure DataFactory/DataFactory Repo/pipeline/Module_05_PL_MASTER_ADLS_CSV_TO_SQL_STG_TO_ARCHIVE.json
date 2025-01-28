@@ -1,0 +1,135 @@
+{
+	"name": "Module_05_PL_MASTER_ADLS_CSV_TO_SQL_STG_TO_ARCHIVE",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_MT_Copy_SourceToTargetBlob",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_02_PL_ABLS_CSV_TO_ADLS_CSV",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_SQL_STG_CREDIT_TBL_TO_SQL_ETL",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PL_SQL_STG_CREDIT_TBL_TO_SQL_ETL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_SQL_STG_METADATA_TBL_TO_SQL_ETL",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PL_SQL_STG_METADATA_TBL_TO_SQL_ETL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_SQL_STG_RATINGS_TBL_TO_SQL_ETL",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PL_SQL_STG_RATINGS_TBL_TO_SQL_ETL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_ARCHIVAL_ADLS_TO_ADLS",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PL_SQL_STG_CREDIT_TBL_TO_SQL_ETL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PL_SQL_STG_METADATA_TBL_TO_SQL_ETL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PL_SQL_STG_RATINGS_TBL_TO_SQL_ETL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PL_ARCHIVAL_ADLS_TO_ADLS",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLS_ADLS_CSV_TO_SQL_STG_TBL",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PL_MT_Copy_SourceToTargetBlob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Module_05_PLS_ADLS_CSV_TO_SQL_STG_TBL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "MODULE 5"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-10-25T13:10:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

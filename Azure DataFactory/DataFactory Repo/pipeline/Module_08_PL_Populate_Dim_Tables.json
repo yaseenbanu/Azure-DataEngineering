@@ -1,0 +1,68 @@
+{
+	"name": "Module_08_PL_Populate_Dim_Tables",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_DATAFLOW_DimMovies",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DataflowPipeline_for_DimMovies",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "Azure-IR-M8",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "ACT_DATAFLOW_DimOnlineService",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "ACT_DATAFLOW_DimMovies",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DataflowPipeline_for_DimOnlineService",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "Azure-IR-M8",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "MODULE 8"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-12-01T19:32:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

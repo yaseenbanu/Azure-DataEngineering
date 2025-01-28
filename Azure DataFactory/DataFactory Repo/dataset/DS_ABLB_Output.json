@@ -1,0 +1,27 @@
+{
+	"name": "DS_ABLB_Output",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS_Output",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 2"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "movies",
+				"container": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\"",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

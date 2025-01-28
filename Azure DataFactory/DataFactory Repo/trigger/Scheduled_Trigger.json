@@ -1,0 +1,24 @@
+{
+	"name": "Scheduled_Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Module_06_PL_Incremental_Load",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 1,
+				"startTime": "2024-11-07T06:17:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

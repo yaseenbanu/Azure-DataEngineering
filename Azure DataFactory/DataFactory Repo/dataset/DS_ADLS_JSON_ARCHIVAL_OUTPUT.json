@@ -1,0 +1,23 @@
+{
+	"name": "DS_ADLS_JSON_ARCHIVAL_OUTPUT",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureDataLakeStorage_Json",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 7"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "online/archive",
+				"fileSystem": "raw"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

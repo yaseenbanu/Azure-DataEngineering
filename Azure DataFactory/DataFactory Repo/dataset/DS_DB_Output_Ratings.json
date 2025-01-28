@@ -1,0 +1,45 @@
+{
+	"name": "DS_DB_Output_Ratings",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQLDB_Input",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 5/Table-Blob Copy"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "userId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "movieId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "timestamp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pipelineId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_filename",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "ratings"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

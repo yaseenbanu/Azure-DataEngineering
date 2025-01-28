@@ -1,0 +1,20 @@
+{
+	"name": "Module_11_PL_Integration_with_Git_test",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_Fail",
+				"type": "Fail",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "Failure Message from ADF Activity",
+					"errorCode": "000"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-12-27T13:58:22Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

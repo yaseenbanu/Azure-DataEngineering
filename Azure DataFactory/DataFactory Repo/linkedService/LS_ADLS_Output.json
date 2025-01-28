@@ -1,0 +1,12 @@
+{
+	"name": "LS_ADLS_Output",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://azurementoringdatalakeyb.blob.core.windows.net/",
+			"accountKind": "StorageV2"
+		}
+	}
+}

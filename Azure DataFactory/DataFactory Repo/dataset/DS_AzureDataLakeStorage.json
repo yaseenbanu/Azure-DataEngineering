@@ -1,0 +1,53 @@
+{
+	"name": "DS_AzureDataLakeStorage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureDataLakeStorage_Json",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 7"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "online",
+				"fileSystem": "raw"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"serviceName": {
+					"type": "string"
+				},
+				"serviceCode": {
+					"type": "string"
+				},
+				"movieId": {
+					"type": "integer"
+				},
+				"userId": {
+					"type": "integer"
+				},
+				"price": {
+					"type": "string"
+				},
+				"transaction": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"datetime": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

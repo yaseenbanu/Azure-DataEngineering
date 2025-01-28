@@ -1,0 +1,86 @@
+{
+	"name": "ADLS_metadata_driven_Input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureDataLakeStorage_Json",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Columndelimiter": {
+				"type": "string"
+			},
+			"Encoding": {
+				"type": "string"
+			},
+			"Quotecharacter": {
+				"type": "string"
+			},
+			"Escapecharacter": {
+				"type": "string"
+			},
+			"Rowdelimiter": {
+				"type": "string"
+			},
+			"SourceContainer": {
+				"type": "string"
+			},
+			"SourceFolder": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "MODULE 9"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().SourceFolder",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().SourceContainer",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": {
+				"value": "@dataset().Columndelimiter",
+				"type": "Expression"
+			},
+			"rowDelimiter": {
+				"value": "@dataset().Rowdelimiter",
+				"type": "Expression"
+			},
+			"encodingName": {
+				"value": "@dataset().Encoding",
+				"type": "Expression"
+			},
+			"escapeChar": {
+				"value": "@dataset().Escapecharacter",
+				"type": "Expression"
+			},
+			"firstRowAsHeader": true,
+			"quoteChar": {
+				"value": "@dataset().Quotecharacter",
+				"type": "Expression"
+			}
+		},
+		"schema": [
+			{
+				"name": "cast",
+				"type": "String"
+			},
+			{
+				"name": "crew",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

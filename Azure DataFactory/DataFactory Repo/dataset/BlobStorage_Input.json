@@ -1,0 +1,40 @@
+{
+	"name": "BlobStorage_Input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ABLB_Input",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 2/Archive"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "archive",
+				"container": "movies"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "cast",
+				"type": "String"
+			},
+			{
+				"name": "crew",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

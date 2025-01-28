@@ -1,0 +1,9 @@
+{
+	"name": "mentoring-adf-yb",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4489b473-03a7-4cfa-9a0d-85244750355d",
+		"tenantId": "b41b72d0-4e9f-4c26-8a69-f949f367c91d"
+	}
+}

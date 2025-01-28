@@ -1,0 +1,110 @@
+{
+	"name": "Module_12_PL_LogicApp_Email_Notification",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_Web_Failure",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "ACT_Failure",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": {
+						"value": "@activity('GetWebflowDesignerURL').output.value",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "{\n  \"pipelineName\": \"@{pipeline().Pipeline}\",\n  \"status\": \"failed\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"pipelineRunId\": \"@{pipeline().RunId}\",\n  \"triggeredBy\": \"Azure Data Factory\",\n  \"errorDetails\": \"@{activity('ACT_Failure').Error.Message}\"\n}\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ACT_Failure",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "GetWebflowDesignerURL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "Fail message from Fail Activity",
+					"errorCode": "000"
+				}
+			},
+			{
+				"name": "ACT_Web_Success",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "ACT_Failure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": {
+						"value": "@activity('GetWebflowDesignerURL').output.value",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "{\n  \"pipelineName\": \"@{pipeline().Pipeline}\",\n  \"status\": \"Success\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"pipelineRunId\": \"@{pipeline().RunId}\",\n  \"triggeredBy\": \"Azure Data Factory\",\n  \"errorDetails\": \"No Failure\"\n}\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "GetWebflowDesignerURL",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": true,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://mentoring-key-vault-yb.vault.azure.net/secrets/LogicAppURL/b8fa302184574fd68c0b39425998a88a?api-version=7.0",
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-12-22T20:08:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

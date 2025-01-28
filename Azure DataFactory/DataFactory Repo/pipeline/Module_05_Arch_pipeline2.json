@@ -1,0 +1,33 @@
+{
+	"name": "Module_05_Arch_pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_SP_tMoviesCompanyMap",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spPopulateMoviesCompanyMap]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SQLDB_Input",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "MODULE 5/Archive"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-10-17T09:44:58Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

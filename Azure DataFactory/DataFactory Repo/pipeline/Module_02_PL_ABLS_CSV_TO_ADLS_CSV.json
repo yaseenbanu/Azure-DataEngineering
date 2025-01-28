@@ -1,0 +1,84 @@
+{
+	"name": "Module_02_PL_ABLS_CSV_TO_ADLS_CSV",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_MT_Copy_Blob",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"wildcardFileName": "*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": {
+								"value": "@concat('_',formatDateTime(utcNow(),'yyyyMMddHHmmss'),'.csv')",
+								"type": "Expression"
+							}
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ABLB_Input",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ABLB_Output",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"variables": {
+			"date": {
+				"type": "String",
+				"defaultValue": "@utcnow('yyyy-MM-ddTHH-mm-ss')"
+			},
+			"modifiedFileName": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "MODULE 2"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-10-23T20:21:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

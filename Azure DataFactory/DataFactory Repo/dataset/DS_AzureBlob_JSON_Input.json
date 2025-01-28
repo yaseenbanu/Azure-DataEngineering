@@ -1,0 +1,52 @@
+{
+	"name": "DS_AzureBlob_JSON_Input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ABLB_Input",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 7"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "online"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"serviceName": {
+					"type": "string"
+				},
+				"serviceCode": {
+					"type": "string"
+				},
+				"movieId": {
+					"type": "integer"
+				},
+				"userId": {
+					"type": "integer"
+				},
+				"price": {
+					"type": "string"
+				},
+				"transaction": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"datetime": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

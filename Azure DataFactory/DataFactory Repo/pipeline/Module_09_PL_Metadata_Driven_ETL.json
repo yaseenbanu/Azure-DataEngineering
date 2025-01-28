@@ -1,0 +1,393 @@
+{
+	"name": "Module_09_PL_Metadata_Driven_ETL",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_Lookup_Control_Metadata",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT * FROM [etl].[tControlMetadata]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_AzureDB_tControlMetadata",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ACT_ForEach_Tables",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "ACT_Lookup_Control_Metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('ACT_Lookup_Control_Metadata').output.value\n",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "CopyDataToStaging",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "source_filename",
+											"value": "$$FILENAME"
+										},
+										{
+											"name": "pipelineId",
+											"value": {
+												"value": "@pipeline().RunId",
+												"type": "Expression"
+											}
+										}
+									],
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"wildcardFolderPath": {
+											"value": "@item().SourceFolder",
+											"type": "Expression"
+										},
+										"wildcardFileName": {
+											"value": "@item().SourceFileName",
+											"type": "Expression"
+										},
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": {
+										"value": "delete from @{item().DestinationSchema}.@{item().DestinationTable} where source_filename = '@{item().SourceFileName}'",
+										"type": "Expression"
+									},
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"dataIntegrationUnits": {
+									"value": "@item().DIU",
+									"type": "Expression"
+								},
+								"translator": {
+									"value": "@json(item().ColumnMapping)",
+									"type": "Expression"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ADLS_metadata_driven_Input",
+									"type": "DatasetReference",
+									"parameters": {
+										"Columndelimiter": {
+											"value": "@item().SourceColumnDelimiter",
+											"type": "Expression"
+										},
+										"Encoding": {
+											"value": "@item().SourceEncoding",
+											"type": "Expression"
+										},
+										"Quotecharacter": {
+											"value": "@item().SourceQuoteCharacter",
+											"type": "Expression"
+										},
+										"Escapecharacter": {
+											"value": "@item().SourceEscapeCharacter",
+											"type": "Expression"
+										},
+										"Rowdelimiter": {
+											"value": "@item().SourceRowDelimiter",
+											"type": "Expression"
+										},
+										"SourceContainer": {
+											"value": "@item().SourceContainer",
+											"type": "Expression"
+										},
+										"SourceFolder": {
+											"value": "@item().SourceFolder",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_AzureDB_Tables",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": {
+											"value": "@item().DestinationTable",
+											"type": "Expression"
+										},
+										"SchemaName": {
+											"value": "@item().DestinationSchema",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "LoggingToSQLDB",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "CopyDataToStaging",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[etl].[usp_LogCopyActivity]",
+								"storedProcedureParameters": {
+									"ActivityName": {
+										"value": "CopyDataToStaging",
+										"type": "String"
+									},
+									"BillingDuration": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.copyDuration",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"CopyDuration": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.billingReference.totalBillableDuration[0].duration",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"DIUUsed": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.usedDataIntegrationUnits",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"EndTime": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"MeterType": {
+										"value": "Standard",
+										"type": "String"
+									},
+									"ParallelCopies": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.usedParallelCopies",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineRunID": {
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ProcessedFiles": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.filesRead",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"QueueDuration": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.executionDetails[0].profile.queue.duration",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"ReadRows": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.rowsRead",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"StartTime": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.executionDetails[0].start",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"Status": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.executionDetails[0].status",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TransferDuration": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.executionDetails[0].detailedDurations.transferDuration",
+											"type": "Expression"
+										},
+										"type": "Double"
+									},
+									"WrittenRows": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.rowsCopied",
+											"type": "Expression"
+										},
+										"type": "Double"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_Azure_SQL_DB",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "ErrorLoggingtoSQL",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "CopyDataToStaging",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[etl].[usp_LogPipelineError]",
+								"storedProcedureParameters": {
+									"ActivityName": {
+										"value": "CopyDataToStaging",
+										"type": "String"
+									},
+									"ErrorCode": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.errors[0].Code",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ErrorDateTime": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"ErrorMessage": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.errors[0].Message",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"FailureType": {
+										"value": {
+											"value": "@activity('CopyDataToStaging').output.errors[0].EventType",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineRunID": {
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_Azure_SQL_DB",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"nonevalue": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "MODULE 9"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-12-17T17:43:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

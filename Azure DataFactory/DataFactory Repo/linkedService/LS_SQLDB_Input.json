@@ -1,0 +1,24 @@
+{
+	"name": "LS_SQLDB_Input",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "azure-mentoring-yb.database.windows.net",
+			"database": "movies",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "admin-yb",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV_Blob",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-db-connectionstring"
+			}
+		}
+	}
+}

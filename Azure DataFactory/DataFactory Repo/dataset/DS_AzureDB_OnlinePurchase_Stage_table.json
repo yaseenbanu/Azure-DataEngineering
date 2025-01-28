@@ -1,0 +1,57 @@
+{
+	"name": "DS_AzureDB_OnlinePurchase_Stage_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_SQL_DB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 7"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "online_service_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "online_service_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "movie_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "user_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "transaction_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "transaction_date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_filename",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pipelineId",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "online_purchase"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,28 @@
+{
+	"name": "LS_SQLServer_OnPremise",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "THUNDERBOLT",
+			"database": "CinemaTickets",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SQL",
+			"userName": "admin_user",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV_Blob",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "connection-string-onpremise"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IR-SelfHostedIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

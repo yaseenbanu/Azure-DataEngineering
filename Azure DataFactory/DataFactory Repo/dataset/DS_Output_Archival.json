@@ -1,0 +1,40 @@
+{
+	"name": "DS_Output_Archival",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS_Output",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 5/Archive DS"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "movies/archive",
+				"container": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "cast",
+				"type": "String"
+			},
+			{
+				"name": "crew",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

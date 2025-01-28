@@ -1,0 +1,53 @@
+{
+	"name": "DS_AzureBlob_JSON_Output_timestamp",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLS_Output",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 7"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "online",
+				"container": "raw"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"serviceName": {
+					"type": "string"
+				},
+				"serviceCode": {
+					"type": "string"
+				},
+				"movieId": {
+					"type": "integer"
+				},
+				"userId": {
+					"type": "integer"
+				},
+				"price": {
+					"type": "string"
+				},
+				"transaction": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"datetime": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

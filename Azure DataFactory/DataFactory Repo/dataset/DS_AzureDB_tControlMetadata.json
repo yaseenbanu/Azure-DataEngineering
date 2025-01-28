@@ -1,0 +1,58 @@
+{
+	"name": "DS_AzureDB_tControlMetadata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_SQL_DB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MODULE 9"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SourcePath",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SourceDelimiter",
+				"type": "char"
+			},
+			{
+				"name": "SourceEncoding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SourceEscapeCharacter",
+				"type": "char"
+			},
+			{
+				"name": "SourceQuoteCharacter",
+				"type": "char"
+			},
+			{
+				"name": "DestinationSchema",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DestinationTable",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DIU",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ColumnMapping",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "etl",
+			"table": "tControlMetadata"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

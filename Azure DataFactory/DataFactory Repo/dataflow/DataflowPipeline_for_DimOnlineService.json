@@ -1,0 +1,70 @@
+{
+	"name": "DataflowPipeline_for_DimOnlineService",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_AzureDB_tOnlineService",
+						"type": "DatasetReference"
+					},
+					"name": "StreamTOnlineServiceInput"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LS_Azure_DB_DATAMART_DimOnlineService",
+						"type": "DatasetReference"
+					},
+					"name": "StreamtOnlineServiceOutput"
+				}
+			],
+			"transformations": [
+				{
+					"name": "StreamDerivedColumn"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ServiceId as integer,",
+				"          ServiceCode as string,",
+				"          ServiceName as string,",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> StreamTOnlineServiceInput",
+				"StreamTOnlineServiceInput derive(CreatedDate = currentUTC(),",
+				"          ModifiedDate = currentUTC()) ~> StreamDerivedColumn",
+				"StreamDerivedColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ServiceKey as integer,",
+				"          ServiceCode as string,",
+				"          ServiceName as string,",
+				"          CreatedDate as timestamp,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     preSQLs:['truncate table [dbo].[DimOnlineService];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ServiceCode,",
+				"          ServiceName,",
+				"          CreatedDate,",
+				"          ModifiedDate",
+				"     )) ~> StreamtOnlineServiceOutput"
+			]
+		}
+	}
+}
